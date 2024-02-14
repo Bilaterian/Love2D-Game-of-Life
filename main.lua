@@ -15,10 +15,12 @@ local boardWidth = math.floor(width/PIXEL_SIZE)
 local boardHeight = math.floor(height/PIXEL_SIZE)
 
 local boards = require "boards"
+local generateButton = require "generateButton"
 
 function love.load()
     boards.setWidth(boardWidth)
     boards.setHeight(boardHeight)
+    generateButton.setSeed()
     boards.populateBoard()
 end
 
