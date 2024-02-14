@@ -9,7 +9,7 @@ local colors = {
 
 local PIXEL_SIZE = 5
 
-local width, height, flags = love.window.getMode( )
+local width, height, flags = love.window.getMode()
 
 local boardWidth = math.floor(width/PIXEL_SIZE)
 local boardHeight = math.floor(height/PIXEL_SIZE)
