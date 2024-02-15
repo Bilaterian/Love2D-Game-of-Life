@@ -80,7 +80,7 @@ function love.draw()
     love.graphics.setColor(colors[4])
     love.graphics.draw(text, width, height)
 
-    --draws generate button
+    --draws pause/play button
     dimensions = pausePlayButton.getButtonDimensions()
     love.graphics.setColor(colors[2])
     love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
