@@ -6,7 +6,6 @@ local button = {
     offsetX = 0,
     offsetY = 0,
     text = "Generate",
-    clicked = false,
 }
 
 function generateButton.setSeed(newSeed)

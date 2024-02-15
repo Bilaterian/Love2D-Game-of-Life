@@ -9,6 +9,7 @@ local colors = {
 
 local PIXEL_SIZE = 5
 
+
 local width, height, flags = love.window.getMode()
 local offsetX = 400
 local offsetY = 0
@@ -17,6 +18,7 @@ local boardHeight = math.floor((height- offsetY)/PIXEL_SIZE)
 
 local boards = require "boards"
 local generateButton = require "generateButton"
+local pausePlayButton = require "pausePlayButton"
 
 function love.load()
     boards.setWidth(boardWidth)
@@ -31,12 +33,22 @@ function love.mousepressed(x, y, button, istouch)
         if generateButton.checkBounds(x, y) == true then
             boards.populateBoard()
         end
+        if pausePlayButton.checkBounds(x, y) == true then
+            pausePlayButton.switchStates()
+        end
     end
 end
 
 function love.update(dt)
 --want to check board here
-    boards.transferBoards()
+    if pausePlayButton.paused() == false then
+        if pausePlayButton.isFrame() == true then
+            boards.transferBoards()
+            pausePlayButton.resetFrame()
+        else
+            pausePlayButton.incrementFrame()
+        end
+    end
 end
 
 function love.draw()
@@ -56,15 +68,28 @@ function love.draw()
         i = i + 1
     end
     
-    --draws button
+    --draws generate button
     local dimensions = generateButton.getButtonDimensions()
     love.graphics.setColor(colors[1])
     love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
     
     local font = love.graphics.newFont(24)
     local text = love.graphics.newText(font, generateButton.getText())
-    local width = (dimensions[3] - font:getWidth(generateButton.getText())) / 2
-    local height = (dimensions[4] - font:getHeight(generateButton.getText())) / 2
+    local width = ((dimensions[3] - font:getWidth(generateButton.getText())) / 2) + dimensions[1]
+    local height = ((dimensions[4] - font:getHeight(generateButton.getText())) / 2) + dimensions[2]
     love.graphics.setColor(colors[4])
     love.graphics.draw(text, width, height)
+
+    --draws generate button
+    dimensions = pausePlayButton.getButtonDimensions()
+    love.graphics.setColor(colors[2])
+    love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
+    
+    font = love.graphics.newFont(24)
+    text = love.graphics.newText(font, pausePlayButton.getText())
+    width = ((dimensions[3] - font:getWidth(pausePlayButton.getText())) / 2) + dimensions[1]
+    height = ((dimensions[4] - font:getHeight(pausePlayButton.getText())) / 2) + dimensions[2]
+    love.graphics.setColor(colors[4])
+    love.graphics.draw(text, width, height)
+
 end
