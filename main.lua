@@ -19,12 +19,18 @@ local boardHeight = math.floor((height- offsetY)/PIXEL_SIZE)
 local boards = require "boards"
 local generateButton = require "generateButton"
 local pausePlayButton = require "pausePlayButton"
+local printButton = require "printButton"
+
+
 
 function love.load()
     boards.setWidth(boardWidth)
     boards.setHeight(boardHeight)
     generateButton.setSeed()
     boards.populateBoard()
+
+    love.filesystem.setIdentity("Game of Life")
+    printButton.mkdir(screenshotDirectory)
 end
 
 function love.mousepressed(x, y, button, istouch)
@@ -35,6 +41,10 @@ function love.mousepressed(x, y, button, istouch)
         end
         if pausePlayButton.checkBounds(x, y) == true then
             pausePlayButton.switchStates()
+        end
+        if printButton.checkBounds(x, y) == true then
+            printButton.setText(love.filesystem.getSaveDirectory( ))
+            printButton.saveScreenshot()
         end
     end
 end
@@ -54,7 +64,6 @@ end
 function love.draw()
     local i = 1
     local j = 1
-    
     --draws board
     for x = 0, width - 1 - offsetX, PIXEL_SIZE do
         for y = 0, height - 1 - offsetY, PIXEL_SIZE do
@@ -89,6 +98,18 @@ function love.draw()
     text = love.graphics.newText(font, pausePlayButton.getText())
     width = ((dimensions[3] - font:getWidth(pausePlayButton.getText())) / 2) + dimensions[1]
     height = ((dimensions[4] - font:getHeight(pausePlayButton.getText())) / 2) + dimensions[2]
+    love.graphics.setColor(colors[4])
+    love.graphics.draw(text, width, height)
+
+    --draws print button
+    dimensions = printButton.getButtonDimensions()
+    love.graphics.setColor(colors[3])
+    love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
+    
+    font = love.graphics.newFont(10)
+    text = love.graphics.newText(font, printButton.getText())
+    width = ((dimensions[3] - font:getWidth(printButton.getText())) / 2) + dimensions[1]
+    height = ((dimensions[4] - font:getHeight(printButton.getText())) / 2) + dimensions[2]
     love.graphics.setColor(colors[4])
     love.graphics.draw(text, width, height)
 
