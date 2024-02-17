@@ -43,7 +43,6 @@ function love.mousepressed(x, y, button, istouch)
             pausePlayButton.switchStates()
         end
         if printButton.checkBounds(x, y) == true then
-            printButton.setText(love.filesystem.getSaveDirectory( ))
             printButton.saveScreenshot()
         end
     end
@@ -106,7 +105,7 @@ function love.draw()
     love.graphics.setColor(colors[3])
     love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
     
-    font = love.graphics.newFont(10)
+    font = love.graphics.newFont(24)
     text = love.graphics.newText(font, printButton.getText())
     width = ((dimensions[3] - font:getWidth(printButton.getText())) / 2) + dimensions[1]
     height = ((dimensions[4] - font:getHeight(printButton.getText())) / 2) + dimensions[2]

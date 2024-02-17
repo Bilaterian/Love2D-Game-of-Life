@@ -44,10 +44,13 @@ function printButton.saveScreenshot()
     local fileName = os.time()..".png"
     local filePath = combinePaths(love.filesystem.getSaveDirectory(), fileName)
     local destPath = combinePaths(screenshotDirectory, fileName)
-    -- We are using a callback, because the screenshot is saved after draw() finishes executing
+
+    local width, height = 400, 600
+    local croppedImageData = love.image.newImageData(width, height)
     ---@param image love.ImageData
     love.graphics.captureScreenshot(function(image)
-        image:encode("png", fileName)
+        croppedImageData:paste(image, 0, 0, 400, 0, 400, 600)
+        croppedImageData:encode("png", fileName)
         os.rename(filePath, destPath)
     end)
 end
