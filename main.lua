@@ -1,11 +1,4 @@
 ---@diagnostic disable: undefined-global
-local colors = {
-    {255, 0, 0},
-    {0, 255, 0},
-    {0, 0, 255},
-    {0, 0, 0},
-    {255, 255, 255},
-}
 
 local PIXEL_SIZE = 5
 
@@ -19,6 +12,7 @@ local boards = require "boards"
 local generateButton = require "generateButton"
 local pausePlayButton = require "pausePlayButton"
 local printButton = require "printButton"
+local brushButtons = require "brushButtons"
 
 function love.load()
     boards.setWidth(boardWidth)
@@ -57,6 +51,7 @@ function love.update(dt)
     end
     if love.mouse.isDown(1) == true then
         if boards.checkBounds(love.mouse.getX(), love.mouse.getY()) == true then
+            --add brush state check here
             boards.onCell(math.ceil((love.mouse.getX() - offsetX)/PIXEL_SIZE),
                 math.ceil((love.mouse.getY() - offsetY)/PIXEL_SIZE))
         end
@@ -70,7 +65,7 @@ function love.draw()
     for x = 0, width - 1 - offsetX, PIXEL_SIZE do
         for y = 0, height - 1 - offsetY, PIXEL_SIZE do
             if boards.getCellValue(i, j) == 1 then
-                love.graphics.setColor(colors[5])
+                love.graphics.setColor(boards.getColor(i, j))
                 love.graphics.rectangle("fill", x + offsetX, y + offsetY, PIXEL_SIZE, PIXEL_SIZE)
             end
             j = j + 1
@@ -81,38 +76,38 @@ function love.draw()
     
     --draws generate button
     local dimensions = generateButton.getButtonDimensions()
-    love.graphics.setColor(colors[1])
+    love.graphics.setColor(brushButtons.getColor(1))
     love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
     
     local font = love.graphics.newFont(24)
     local text = love.graphics.newText(font, generateButton.getText())
     local width = ((dimensions[3] - font:getWidth(generateButton.getText())) / 2) + dimensions[1]
     local height = ((dimensions[4] - font:getHeight(generateButton.getText())) / 2) + dimensions[2]
-    love.graphics.setColor(colors[4])
+    love.graphics.setColor(brushButtons.getColor(4))
     love.graphics.draw(text, width, height)
 
     --draws pause/play button
     dimensions = pausePlayButton.getButtonDimensions()
-    love.graphics.setColor(colors[2])
+    love.graphics.setColor(brushButtons.getColor(2))
     love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
     
     font = love.graphics.newFont(24)
     text = love.graphics.newText(font, pausePlayButton.getText())
     width = ((dimensions[3] - font:getWidth(pausePlayButton.getText())) / 2) + dimensions[1]
     height = ((dimensions[4] - font:getHeight(pausePlayButton.getText())) / 2) + dimensions[2]
-    love.graphics.setColor(colors[4])
+    love.graphics.setColor(brushButtons.getColor(4))
     love.graphics.draw(text, width, height)
 
     --draws print button
     dimensions = printButton.getButtonDimensions()
-    love.graphics.setColor(colors[3])
+    love.graphics.setColor(brushButtons.getColor(3))
     love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
     
     font = love.graphics.newFont(24)
     text = love.graphics.newText(font, printButton.getText())
     width = ((dimensions[3] - font:getWidth(printButton.getText())) / 2) + dimensions[1]
     height = ((dimensions[4] - font:getHeight(printButton.getText())) / 2) + dimensions[2]
-    love.graphics.setColor(colors[4])
+    love.graphics.setColor(brushButtons.getColor(4))
     love.graphics.draw(text, width, height)
 
 end
