@@ -36,6 +36,7 @@ function love.mousepressed(x, y, button, istouch)
         if printButton.checkBounds(x, y) == true then
             printButton.saveScreenshot()
         end
+        brushButtons.setBrush(x, y)
     end
 end
 
@@ -52,8 +53,16 @@ function love.update(dt)
     if love.mouse.isDown(1) == true then
         if boards.checkBounds(love.mouse.getX(), love.mouse.getY()) == true then
             --add brush state check here
-            boards.onCell(math.ceil((love.mouse.getX() - offsetX)/PIXEL_SIZE),
+            if brushButtons.getBrush() == "PAINT" then
+                boards.onCell(math.ceil((love.mouse.getX() - offsetX)/PIXEL_SIZE),
                 math.ceil((love.mouse.getY() - offsetY)/PIXEL_SIZE))
+            elseif brushButtons.getBrush() == "ERASE" then
+                boards.offCell(math.ceil((love.mouse.getX() - offsetX)/PIXEL_SIZE),
+                math.ceil((love.mouse.getY() - offsetY)/PIXEL_SIZE))
+            elseif brushButtons.getBrush() == "COLOR" then
+                boards.setColor(math.ceil((love.mouse.getX() - offsetX)/PIXEL_SIZE),
+                math.ceil((love.mouse.getY() - offsetY)/PIXEL_SIZE), brushButtons.getColor())
+            end
         end
     end
 end
@@ -110,4 +119,37 @@ function love.draw()
     love.graphics.setColor(brushButtons.getColor(4))
     love.graphics.draw(text, width, height)
 
+    --draws paint, erase and color buttons
+    dimensions = brushButtons.getPaintButtonDimensions()
+    love.graphics.setColor(brushButtons.getColor(5))
+    love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
+    
+    font = love.graphics.newFont(24)
+    text = love.graphics.newText(font, brushButtons.getPaintText())
+    width = ((dimensions[3] - font:getWidth(brushButtons.getPaintText())) / 2) + dimensions[1]
+    height = ((dimensions[4] - font:getHeight(brushButtons.getPaintText())) / 2) + dimensions[2]
+    love.graphics.setColor(brushButtons.getColor(4))
+    love.graphics.draw(text, width, height)
+
+    dimensions = brushButtons.getEraseButtonDimensions()
+    love.graphics.setColor(brushButtons.getColor(5))
+    love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
+    
+    font = love.graphics.newFont(24)
+    text = love.graphics.newText(font, brushButtons.getEraseText())
+    width = ((dimensions[3] - font:getWidth(brushButtons.getEraseText())) / 2) + dimensions[1]
+    height = ((dimensions[4] - font:getHeight(brushButtons.getEraseText())) / 2) + dimensions[2]
+    love.graphics.setColor(brushButtons.getColor(4))
+    love.graphics.draw(text, width, height)
+
+    dimensions = brushButtons.getColorButtonDimensions()
+    love.graphics.setColor(brushButtons.getColor(5))
+    love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
+    
+    font = love.graphics.newFont(24)
+    text = love.graphics.newText(font, brushButtons.getColorText())
+    width = ((dimensions[3] - font:getWidth(brushButtons.getColorText())) / 2) + dimensions[1]
+    height = ((dimensions[4] - font:getHeight(brushButtons.getColorText())) / 2) + dimensions[2]
+    love.graphics.setColor(brushButtons.getColor(4))
+    love.graphics.draw(text, width, height)
 end
