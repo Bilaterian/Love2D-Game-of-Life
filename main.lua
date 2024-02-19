@@ -9,19 +9,16 @@ local colors = {
 
 local PIXEL_SIZE = 5
 
-
 local width, height, flags = love.window.getMode()
 local offsetX = 400
 local offsetY = 0
 local boardWidth = math.floor((width - offsetX)/PIXEL_SIZE)
-local boardHeight = math.floor((height- offsetY)/PIXEL_SIZE)
+local boardHeight = math.floor((height - offsetY)/PIXEL_SIZE)
 
 local boards = require "boards"
 local generateButton = require "generateButton"
 local pausePlayButton = require "pausePlayButton"
 local printButton = require "printButton"
-
-
 
 function love.load()
     boards.setWidth(boardWidth)
@@ -30,7 +27,7 @@ function love.load()
     boards.populateBoard()
 
     love.filesystem.setIdentity("Game of Life")
-    printButton.mkdir(screenshotDirectory)
+    printButton.mkdir(printButton.getScreenshotDirectory())
 end
 
 function love.mousepressed(x, y, button, istouch)
@@ -56,6 +53,12 @@ function love.update(dt)
             pausePlayButton.resetFrame()
         else
             pausePlayButton.incrementFrame()
+        end
+    end
+    if love.mouse.isDown(1) == true then
+        if boards.checkBounds(love.mouse.getX(), love.mouse.getY()) == true then
+            boards.onCell(math.ceil((love.mouse.getX() - offsetX)/PIXEL_SIZE),
+                math.ceil((love.mouse.getY() - offsetY)/PIXEL_SIZE))
         end
     end
 end

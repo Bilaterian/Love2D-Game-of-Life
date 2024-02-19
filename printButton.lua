@@ -8,6 +8,8 @@ local button = {
     text = "Print",
 }
 
+local separator = package.config:sub(1,1)
+
 function printButton.checkBounds(x, y)
     if x > button.offsetX and x < button.offsetX + button.width then
         if y > button.offsetY and y < button.offsetY + button.height then
@@ -35,10 +37,15 @@ function printButton.mkdir(path)
 end
 
 local function combinePaths(...)
-    return (table.concat({...}, "\\"):gsub("\\+", "\\")) -- System dependant
+    return (table.concat({...}, separator):gsub(separator .. "+", separator)) -- System dependant
 end
 
 local screenshotDirectory = combinePaths(love.filesystem.getWorkingDirectory(), "Pictures")
+
+
+function printButton.getScreenshotDirectory()
+    return screenshotDirectory
+end
 
 function printButton.saveScreenshot()
     local fileName = os.time()..".png"

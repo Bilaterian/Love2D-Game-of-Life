@@ -2,9 +2,22 @@ local boards = {}
 
 local board = {}
 local nextBoard = {}
+local colorBoard = {}
 
 local boardWidth = 0;
 local boardHeight = 0;
+
+local xBound = 400
+local yBound = 0
+
+function boards.checkBounds(x, y)
+    if x > xBound and x < xBound + 800 then
+        if y > yBound and y < yBound + 800 then
+            return true
+        end
+    end
+    return false
+end
 
 function boards.setWidth(width)
     boardWidth = width
@@ -22,9 +35,11 @@ function boards.populateBoard()
     for i = 1, boardWidth do
         board[i] = {}
         nextBoard[i] = {}
+        colorBoard[i] = {}
         for j = 1, boardHeight do
             board[i][j] = math.random(0,1)
             nextBoard[i][j] = 0
+            colorBoard[i][j] = {255, 255, 255}
         end
     end
 end
@@ -76,6 +91,22 @@ function boards.transferBoards()
             board[i][j] = nextBoard[i][j]
         end
     end
+end
+
+function boards.onCell(i, j)
+    board[i][j] = 1
+end
+
+function boards.offCell(i, j)
+    board[i][j] = 0
+end
+
+function boards.getColor(i, j)
+    return colorBoard[i][j]
+end
+
+function boards.setColor(i, j, color)
+    colorBoard[i][j] = color
 end
 
 return boards
