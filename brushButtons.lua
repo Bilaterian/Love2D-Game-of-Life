@@ -104,4 +104,7 @@ local brushButtons = {}
         return currentBrush
     end
 
+    local paintbox = {}
+
+
 return brushButtons
