@@ -1,10 +1,10 @@
 local generateButton = {}
 local seed = 0
 local button = {
-    width = 400,
-    height = 100,
-    offsetX = 0,
-    offsetY = 0,
+    width = 390,
+    height = 95,
+    offsetX = 5,
+    offsetY = 5,
     text = "Generate",
 }
 

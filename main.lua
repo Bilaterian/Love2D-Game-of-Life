@@ -39,6 +39,7 @@ function love.mousepressed(x, y, button, istouch)
             printButton.saveScreenshot()
         end
         brushButtons.setBrush(x, y)
+        brushButtons.setColor(x, y)
     end
 end
 
@@ -76,7 +77,7 @@ function love.draw()
     for x = 0, width - 1 - offsetX, PIXEL_SIZE do
         for y = 0, height - 1 - offsetY, PIXEL_SIZE do
             if boards.getCellValue(i, j) == 1 then
-                love.graphics.setColor(boards.getColor(i, j))
+                love.graphics.setColor(love.math.colorFromBytes(boards.getColor(i, j)))
                 love.graphics.rectangle("fill", x + offsetX, y + offsetY, PIXEL_SIZE, PIXEL_SIZE)
             end
             j = j + 1

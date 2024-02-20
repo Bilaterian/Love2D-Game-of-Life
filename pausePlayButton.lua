@@ -4,10 +4,10 @@ local frame = 1
 local isPaused = false
 
 local button = {
-    width = 400,
-    height = 100,
-    offsetX = 0,
-    offsetY = 100,
+    width = 390,
+    height = 95,
+    offsetX = 5,
+    offsetY = 105,
     text = "Pause/Play",
 }
 

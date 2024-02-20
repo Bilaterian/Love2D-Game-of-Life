@@ -1,10 +1,10 @@
 local printButton = {}
 
 local button = {
-    width = 400,
-    height = 100,
-    offsetX = 0,
-    offsetY = 200,
+    width = 390,
+    height = 95,
+    offsetX = 5,
+    offsetY = 205,
     text = "Print",
 }
 

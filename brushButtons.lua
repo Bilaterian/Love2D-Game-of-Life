@@ -17,7 +17,8 @@ local brushButtons = {}
         {0, 87, 132, 255}, --blue
         {49, 162, 242, 255}, --light blue
         {178, 220, 239, 255}, --pale blue
-        {255, 0, 255, 255} -- magenta
+        {255, 0, 255, 255}, -- magenta
+        {100, 100, 100, 255}, --buttonColor
     }
 
     local currentColor = colors[4]
@@ -31,25 +32,25 @@ local brushButtons = {}
     local currentBrush = "PAINT"
 
     local paintButton = {
-        width = 130,
-        height = 100,
-        offsetX = 0,
-        offsetY = 300,
+        width = 126,
+        height = 95,
+        offsetX = 5,
+        offsetY = 305,
         text = "Paint",
     }
 
     local eraseButton = {
-        width = 130,
-        height = 100,
-        offsetX = 135,
-        offsetY = 300,
+        width = 126,
+        height = 95,
+        offsetX = 136,
+        offsetY = 305,
         text = "Erase",
     }
     local colorButton = {
-        width = 130,
-        height = 100,
-        offsetX = 270,
-        offsetY = 300,
+        width = 128,
+        height = 95,
+        offsetX = 267,
+        offsetY = 305,
         text = "Color",
     }
 
@@ -104,7 +105,46 @@ local brushButtons = {}
         return currentBrush
     end
 
-    local paintbox = {}
+    local paintbox = {
+        width = 35,
+        height = 35,
+    }
 
+    function brushButtons.drawPalette()
+        local x = 10
+        local y = 410
+
+        love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(18)))
+        love.graphics.rectangle("fill", 5, 405, 360, 135)
+        for i = 1, #colors - 1 do
+            love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(i)))
+            love.graphics.rectangle("fill", x, y, paintbox.width, paintbox.height)
+           
+            x = x + paintbox.width + 10
+            if x + paintbox.width >= 400 then
+                x = 10
+                y = y + paintbox.height + 10
+            end
+        end
+    end
+
+    function brushButtons.setColor(x, y)
+        local offsetX = 10
+        local offsetY = 410
+        for i = 1, #colors - 1 do
+            if x > offsetX and x < offsetX + paintbox.width then
+                if y > offsetY and y < offsetY + paintbox.height then
+                    currentColor = colors[i]
+                end
+            end
+
+            offsetX = offsetX + paintbox.width + 10
+            if offsetX + paintbox.width >= 400 then
+                offsetX = 10
+                offsetY = offsetY + paintbox.height + 10
+            end
+        end
+        
+    end
 
 return brushButtons
