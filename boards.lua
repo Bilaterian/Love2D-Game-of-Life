@@ -39,7 +39,7 @@ function boards.populateBoard()
         for j = 1, boardHeight do
             board[i][j] = math.random(0,1)
             nextBoard[i][j] = 0
-            colorBoard[i][j] = {255, 255, 255}
+            colorBoard[i][j] = {255, 255, 255, 255}
         end
     end
 end
