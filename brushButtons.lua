@@ -85,6 +85,10 @@ local brushButtons = {}
         return colors[i]
     end
 
+    function brushButtons.getRandomColor()
+        return colors[math.random(2, #colors - 1)]
+    end
+
     function brushButtons.setBrush(x, y)
         if x > paintButton.offsetX and x < paintButton.offsetX + paintButton.width then
             if y > paintButton.offsetY and y < paintButton.offsetY + paintButton.height then
