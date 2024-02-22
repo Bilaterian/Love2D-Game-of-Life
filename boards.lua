@@ -13,8 +13,8 @@ local yBound = 0
 local brushButtons = require "brushButtons"
 
 function boards.checkBounds(x, y)
-    if x > xBound and x < xBound + 800 then
-        if y > yBound and y < yBound + 800 then
+    if x > xBound and x < 800 then
+        if y > yBound and y <  800 then
             return true
         end
     end

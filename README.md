@@ -8,7 +8,7 @@
     --pick between turning on cells and turning off cells
  - switch between painting and switching cells -> done
  - select colors from a palette -> done
- - possible improvements: change brush size?
+ - possible improvements: change brush size? -> done
  - custom filenames, if empty saved as default
  - window opens up for filename and saved notification window
  - better indicators when something is pressed

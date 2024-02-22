@@ -36,7 +36,7 @@ local brushButtons = {}
         height = 95,
         offsetX = 5,
         offsetY = 305,
-        text = "Paint",
+        text = "Draw",
     }
 
     local eraseButton = {
@@ -114,28 +114,32 @@ local brushButtons = {}
         height = 35,
     }
 
+
+    local XPAD = 25
+    local YPAD = 410
+
     function brushButtons.drawPalette()
-        local x = 10
-        local y = 410
+        local x = XPAD
+        local y = YPAD
 
         love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(18)))
-        love.graphics.rectangle("fill", 5, 405, 360, 135)
-        for i = 1, #colors - 1 do
+        love.graphics.rectangle("fill", XPAD - 5, YPAD - 5, 360, 90)
+        for i = 2, #colors - 1 do
             love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(i)))
             love.graphics.rectangle("fill", x, y, paintbox.width, paintbox.height)
            
             x = x + paintbox.width + 10
             if x + paintbox.width >= 400 then
-                x = 10
+                x = XPAD
                 y = y + paintbox.height + 10
             end
         end
     end
 
     function brushButtons.setColor(x, y)
-        local offsetX = 10
-        local offsetY = 410
-        for i = 1, #colors - 1 do
+        local offsetX = XPAD
+        local offsetY = YPAD
+        for i = 2, #colors - 1 do
             if x > offsetX and x < offsetX + paintbox.width then
                 if y > offsetY and y < offsetY + paintbox.height then
                     currentColor = colors[i]
@@ -144,7 +148,7 @@ local brushButtons = {}
 
             offsetX = offsetX + paintbox.width + 10
             if offsetX + paintbox.width >= 400 then
-                offsetX = 10
+                offsetX = XPAD
                 offsetY = offsetY + paintbox.height + 10
             end
         end

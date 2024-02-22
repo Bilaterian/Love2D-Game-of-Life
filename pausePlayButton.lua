@@ -1,7 +1,7 @@
 local pausePlayButton = {}
 local FRAME_RATE = 7
 local frame = 1
-local isPaused = false
+local isPaused = true
 
 local button = {
     width = 390,

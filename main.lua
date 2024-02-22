@@ -14,6 +14,8 @@ local pausePlayButton = require "pausePlayButton"
 local printButton = require "printButton"
 local brushButtons = require "brushButtons"
 local canvasMenu = require "canvasMenu"
+local brushSizes = require "brushSizes"
+local debugPrint = require "debugPrint"
 
 function love.load()
     boards.setWidth(boardWidth)
@@ -40,6 +42,7 @@ function love.mousepressed(x, y, button, istouch)
         end
         brushButtons.setBrush(x, y)
         brushButtons.setColor(x, y)
+        brushSizes.checkBounds(x, y)
     end
 end
 
@@ -55,16 +58,22 @@ function love.update(dt)
     end
     if love.mouse.isDown(1) == true then
         if boards.checkBounds(love.mouse.getX(), love.mouse.getY()) == true then
-            --add brush state check here
-            if brushButtons.getBrush() == "PAINT" then
-                boards.onCell(math.ceil((love.mouse.getX() - offsetX)/PIXEL_SIZE),
-                math.ceil((love.mouse.getY() - offsetY)/PIXEL_SIZE))
-            elseif brushButtons.getBrush() == "ERASE" then
-                boards.offCell(math.ceil((love.mouse.getX() - offsetX)/PIXEL_SIZE),
-                math.ceil((love.mouse.getY() - offsetY)/PIXEL_SIZE))
-            elseif brushButtons.getBrush() == "COLOR" then
-                boards.setColor(math.ceil((love.mouse.getX() - offsetX)/PIXEL_SIZE),
-                math.ceil((love.mouse.getY() - offsetY)/PIXEL_SIZE), brushButtons.getColor())
+            local area = brushSizes.getArea(love.mouse.getX(), love.mouse.getY())
+
+            for i = 1, # area do
+                if boards.checkBounds(area[i][1], area[i][2]) == true then
+                    if brushButtons.getBrush() == "PAINT" then
+                        boards.onCell(math.ceil((area[i][1] - offsetX)/PIXEL_SIZE),
+                                      math.ceil((area[i][2] - offsetY)/PIXEL_SIZE))
+                    elseif brushButtons.getBrush() == "ERASE" then
+                        boards.offCell(math.ceil((area[i][1] - offsetX)/PIXEL_SIZE),
+                                       math.ceil((area[i][2] - offsetY)/PIXEL_SIZE))
+                    elseif brushButtons.getBrush() == "COLOR" then
+                        boards.setColor(math.ceil((area[i][1] - offsetX)/PIXEL_SIZE),
+                                        math.ceil((area[i][2] - offsetY)/PIXEL_SIZE),
+                                        brushButtons.getColor())
+                    end
+                end
             end
         end
     end
@@ -87,4 +96,5 @@ function love.draw()
     end
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(canvasMenu.getCanvas(), 0, 0)
+    --debugPrint.print()
 end

@@ -4,6 +4,7 @@ local generateButton = require "generateButton"
 local pausePlayButton = require "pausePlayButton"
 local printButton = require "printButton"
 local brushButtons = require "brushButtons"
+local brushSizes = require "brushSizes"
 
 local canvas = love.graphics.newCanvas(400, 800)
 
@@ -82,7 +83,7 @@ function canvasMenu.drawCanvas()
     love.graphics.draw(text, width, height)
 
     brushButtons.drawPalette()
-
+    brushSizes.drawButtons()
     love.graphics.setCanvas()
 end
 
