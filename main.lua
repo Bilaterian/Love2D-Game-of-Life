@@ -16,6 +16,9 @@ local brushButtons = require "brushButtons"
 local canvasMenu = require "canvasMenu"
 local brushSizes = require "brushSizes"
 local debugPrint = require "debugPrint"
+local filenameWindow = require "filenameWindow"
+
+local utf8 = require("utf8")
 
 function love.load()
     boards.setWidth(boardWidth)
@@ -25,53 +28,92 @@ function love.load()
 
     love.filesystem.setIdentity("Game of Life")
     printButton.mkdir(printButton.getScreenshotDirectory())
+    love.keyboard.setKeyRepeat(true)
     canvasMenu.drawCanvas()
 end
+
+local text = ""
 
 function love.mousepressed(x, y, button, istouch)
     if button == 1 then
         --all button checks will happen here
-        if generateButton.checkBounds(x, y) == true then
-            boards.populateBoard()
+        if filenameWindow.screenState() == false then
+            if generateButton.checkBounds(x, y) == true then
+                boards.populateBoard()
+            end
+            if pausePlayButton.checkBounds(x, y) == true then
+                pausePlayButton.switchStates()
+            end
+            if printButton.checkBounds(x, y) == true then
+                --printButton.saveScreenshot()
+                filenameWindow.updateDefaultFilename()
+                filenameWindow.onScreen()
+            end
+            brushButtons.setBrush(x, y)
+            brushButtons.setColor(x, y)
+            brushSizes.checkBounds(x, y)
+            text = ""
+        else
+            --mouse presses when window is on 
+            filenameWindow.checkBounds(x, y)
         end
-        if pausePlayButton.checkBounds(x, y) == true then
-            pausePlayButton.switchStates()
+        
+    end
+end
+
+function love.textinput(t)
+    if filenameWindow.screenState() == true then
+        if #text < 19 then
+            text = text .. t
+            filenameWindow.updateFilename(text)
         end
-        if printButton.checkBounds(x, y) == true then
-            printButton.saveScreenshot()
+    end
+end
+
+function love.keypressed(key)
+    if filenameWindow.screenState() == true then
+        if key == "backspace" then
+            if #text > 0 then
+                text = text:sub(1, -2)
+                filenameWindow.updateFilename(text)
+            end
+        elseif key == "return" then
+            filenameWindow.printFile()
+            filenameWindow.offScreen()
+        elseif key == "escape" then
+            filenameWindow.offScreen()
         end
-        brushButtons.setBrush(x, y)
-        brushButtons.setColor(x, y)
-        brushSizes.checkBounds(x, y)
     end
 end
 
 function love.update(dt)
 --want to check board here
-    if pausePlayButton.paused() == false then
-        if pausePlayButton.isFrame() == true then
-            boards.transferBoards()
-            pausePlayButton.resetFrame()
-        else
-            pausePlayButton.incrementFrame()
+    if filenameWindow.screenState() == false then
+        if pausePlayButton.paused() == false then
+            if pausePlayButton.isFrame() == true then
+                boards.transferBoards()
+                pausePlayButton.resetFrame()
+            else
+                pausePlayButton.incrementFrame()
+            end
         end
-    end
-    if love.mouse.isDown(1) == true then
-        if boards.checkBounds(love.mouse.getX(), love.mouse.getY()) == true then
-            local area = brushSizes.getArea(love.mouse.getX(), love.mouse.getY())
-
-            for i = 1, # area do
-                if boards.checkBounds(area[i][1], area[i][2]) == true then
-                    if brushButtons.getBrush() == "PAINT" then
-                        boards.onCell(math.ceil((area[i][1] - offsetX)/PIXEL_SIZE),
-                                      math.ceil((area[i][2] - offsetY)/PIXEL_SIZE))
-                    elseif brushButtons.getBrush() == "ERASE" then
-                        boards.offCell(math.ceil((area[i][1] - offsetX)/PIXEL_SIZE),
-                                       math.ceil((area[i][2] - offsetY)/PIXEL_SIZE))
-                    elseif brushButtons.getBrush() == "COLOR" then
-                        boards.setColor(math.ceil((area[i][1] - offsetX)/PIXEL_SIZE),
-                                        math.ceil((area[i][2] - offsetY)/PIXEL_SIZE),
-                                        brushButtons.getColor())
+        if love.mouse.isDown(1) == true then
+            if boards.checkBounds(love.mouse.getX(), love.mouse.getY()) == true then
+                local area = brushSizes.getArea(love.mouse.getX(), love.mouse.getY())
+    
+                for i = 1, # area do
+                    if boards.checkBounds(area[i][1], area[i][2]) == true then
+                        if brushButtons.getBrush() == "PAINT" then
+                            boards.onCell(math.ceil((area[i][1] - offsetX)/PIXEL_SIZE),
+                                          math.ceil((area[i][2] - offsetY)/PIXEL_SIZE))
+                        elseif brushButtons.getBrush() == "ERASE" then
+                            boards.offCell(math.ceil((area[i][1] - offsetX)/PIXEL_SIZE),
+                                           math.ceil((area[i][2] - offsetY)/PIXEL_SIZE))
+                        elseif brushButtons.getBrush() == "COLOR" then
+                            boards.setColor(math.ceil((area[i][1] - offsetX)/PIXEL_SIZE),
+                                            math.ceil((area[i][2] - offsetY)/PIXEL_SIZE),
+                                            brushButtons.getColor())
+                        end
                     end
                 end
             end
@@ -97,4 +139,8 @@ function love.draw()
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(canvasMenu.getCanvas(), 0, 0)
     --debugPrint.print()
+
+    if filenameWindow.screenState() == true then
+        filenameWindow.drawWindow()
+    end
 end

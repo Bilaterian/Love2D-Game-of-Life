@@ -47,8 +47,13 @@ function printButton.getScreenshotDirectory()
     return screenshotDirectory
 end
 
+local fileName = os.time()..".png"
+
+function printButton.setFilename(text)
+    fileName = text..".png"
+end
+
 function printButton.saveScreenshot()
-    local fileName = os.time()..".png"
     local filePath = combinePaths(love.filesystem.getSaveDirectory(), fileName)
     local destPath = combinePaths(screenshotDirectory, fileName)
 
