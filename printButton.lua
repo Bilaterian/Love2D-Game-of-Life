@@ -6,6 +6,7 @@ local button = {
     offsetX = 5,
     offsetY = 205,
     text = "Print",
+    isPressed = false,
 }
 
 local separator = package.config:sub(1,1)
@@ -65,6 +66,18 @@ function printButton.saveScreenshot()
         croppedImageData:encode("png", fileName)
         os.rename(filePath, destPath)
     end)
+end
+
+function printButton.pressed()
+    button.isPressed = true
+end
+
+function printButton.unPressed()
+    button.isPressed = false
+end
+
+function printButton.getPressedState()
+    return button.isPressed
 end
 
 return printButton

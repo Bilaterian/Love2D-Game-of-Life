@@ -6,6 +6,7 @@ local button = {
     offsetX = 5,
     offsetY = 5,
     text = "Generate",
+    isPressed = false,
 }
 
 function generateButton.setSeed(newSeed)
@@ -31,6 +32,18 @@ end
 
 function generateButton.getText()
     return button.text
+end
+
+function generateButton.pressed()
+    button.isPressed = true
+end
+
+function generateButton.unPressed()
+    button.isPressed = false
+end
+
+function generateButton.getPressedState()
+    return button.isPressed
 end
 
 return generateButton

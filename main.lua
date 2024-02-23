@@ -39,13 +39,15 @@ function love.mousepressed(x, y, button, istouch)
         --all button checks will happen here
         if filenameWindow.screenState() == false then
             if generateButton.checkBounds(x, y) == true then
+                generateButton.pressed()
                 boards.populateBoard()
             end
             if pausePlayButton.checkBounds(x, y) == true then
+                pausePlayButton.pressed()
                 pausePlayButton.switchStates()
             end
             if printButton.checkBounds(x, y) == true then
-                --printButton.saveScreenshot()
+                printButton.pressed()
                 filenameWindow.updateDefaultFilename()
                 filenameWindow.onScreen()
             end
@@ -59,6 +61,15 @@ function love.mousepressed(x, y, button, istouch)
         end
         
     end
+end
+
+function love.mousereleased( x, y, button, istouch, presses )
+    generateButton.unPressed()
+    pausePlayButton.unPressed()
+    printButton.unPressed()
+    brushButtons.offButton()
+    brushSizes.unPressed()
+    filenameWindow.unPressed()
 end
 
 function love.textinput(t)
@@ -122,6 +133,7 @@ function love.update(dt)
 end
 
 function love.draw()
+    canvasMenu.drawCanvas()
     local i = 1
     local j = 1
     --draws board

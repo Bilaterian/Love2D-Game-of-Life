@@ -15,6 +15,7 @@ local closeButton = {
     height = 35,
     offsetX = 565,
     offsetY = 130,
+    isPressed = false,
 }
 
 local saveButton = {
@@ -22,7 +23,8 @@ local saveButton = {
     height = 75,
     offsetX = 225,
     offsetY = 300,
-    text = "Save"
+    text = "Save",
+    isPressed = false,
 }
 local texBox = {
     width = 350,
@@ -45,10 +47,18 @@ function filenameWindow.drawWindow()
     --closeButton
     love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(1)))
     love.graphics.rectangle("line", closeButton.offsetX - 1, closeButton.offsetY - 1, closeButton.width + 2, closeButton.height + 2)
-    love.graphics.setColor(255,0,0)
+    if closeButton.isPressed == false then
+        love.graphics.setColor(255, 0, 0)
+    else
+        love.graphics.setColor(love.math.colorFromBytes(127, 0, 0, 255))
+    end
     love.graphics.rectangle("fill", closeButton.offsetX, closeButton.offsetY, closeButton.width, closeButton.height)
     --saveButton
-    love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(18)))
+    if saveButton.isPressed == false then
+        love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(18)))
+    else
+        love.graphics.setColor(love.math.colorFromBytes(80, 80, 80, 255))
+    end
     love.graphics.rectangle("fill", saveButton.offsetX, saveButton.offsetY, saveButton.width, saveButton.height)
 
     local font = love.graphics.newFont(24)
@@ -110,14 +120,21 @@ end
 function filenameWindow.checkBounds(x, y)
     if x >= closeButton.offsetX and x <= closeButton.offsetX + closeButton.width then
         if y >= closeButton.offsetY and y <= closeButton.offsetY + closeButton.height then
+            closeButton.isPressed = true
             screenOn = false
             fileName = ""
         end
     elseif x >= saveButton.offsetX and x <= saveButton.offsetX + saveButton.width then
         if y >= saveButton.offsetY and y <= saveButton.offsetY + saveButton.height then
+            saveButton.isPressed = true
             filenameWindow.printFile()
         end
     end
+end
+
+function filenameWindow.unPressed()
+    closeButton.isPressed = false
+    saveButton.isPressed = false
 end
 
 function filenameWindow.updateDefaultFilename()

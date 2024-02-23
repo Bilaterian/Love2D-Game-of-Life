@@ -72,11 +72,21 @@ local brushSizes = {}
         offsetX = 5,
         offsetY = 500,
     }
+    local buttonStates = {
+        false,
+        false,
+        false,
+        false,
+    }
 
     function brushSizes.drawButtons()
         local x = button.offsetX
         for i = 1, #brushSize do
-            love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(18)))
+            if buttonStates[i] == false then
+                love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(18)))
+            else
+                love.graphics.setColor(love.math.colorFromBytes(80, 80, 80, 255))
+            end
             love.graphics.rectangle("fill", x, button.offsetY, button.width, button.height)
 
             local font = love.graphics.newFont(24)
@@ -96,10 +106,17 @@ local brushSizes = {}
         for i = 1, #brushSize do
             if x > offsetX and x < offsetX + button.width then
                 if y > button.offsetY and y < button.offsetY + button.height then
+                    buttonStates[i] = true
                     brush = brushSize[i]
                 end
             end
             offsetX = offsetX + button.offsetX + button.width
+        end
+    end
+
+    function brushSizes.unPressed()
+        for i = 1, #brushSize do
+            buttonStates[i] = false
         end
     end
 

@@ -9,6 +9,7 @@ local button = {
     offsetX = 5,
     offsetY = 105,
     text = "Pause/Play",
+    isPressed = false,
 }
 
 function pausePlayButton.isFrame()
@@ -49,6 +50,18 @@ end
 
 function pausePlayButton.getText()
     return button.text
+end
+
+function pausePlayButton.pressed()
+    button.isPressed = true
+end
+
+function pausePlayButton.unPressed()
+    button.isPressed = false
+end
+
+function pausePlayButton.getPressedState()
+    return button.isPressed
 end
 
 return pausePlayButton

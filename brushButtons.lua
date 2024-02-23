@@ -37,6 +37,7 @@ local brushButtons = {}
         offsetX = 5,
         offsetY = 305,
         text = "Draw",
+        isPressed = false,
     }
 
     local eraseButton = {
@@ -45,6 +46,7 @@ local brushButtons = {}
         offsetX = 136,
         offsetY = 305,
         text = "Erase",
+        isPressed = false,
     }
     local colorButton = {
         width = 128,
@@ -52,6 +54,7 @@ local brushButtons = {}
         offsetX = 267,
         offsetY = 305,
         text = "Color",
+        isPressed = false,
     }
 
     function brushButtons.getPaintButtonDimensions()
@@ -93,16 +96,37 @@ local brushButtons = {}
         if x > paintButton.offsetX and x < paintButton.offsetX + paintButton.width then
             if y > paintButton.offsetY and y < paintButton.offsetY + paintButton.height then
                 currentBrush = brushStates[1]
+                paintButton.isPressed = true
             end
         elseif x > eraseButton.offsetX and x < eraseButton.offsetX + eraseButton.width then
             if y > eraseButton.offsetY and y < eraseButton.offsetY + eraseButton.height then
                 currentBrush = brushStates[2]
+                eraseButton.isPressed = true
             end
         elseif x > colorButton.offsetX and x < colorButton.offsetX + colorButton.width then
             if y > colorButton.offsetY and y < colorButton.offsetY + colorButton.height then
                 currentBrush = brushStates[3]
+                colorButton.isPressed = true
             end
         end
+    end
+
+    function brushButtons.offButton()
+        paintButton.isPressed = false
+        eraseButton.isPressed = false
+        colorButton.isPressed = false
+    end
+
+    function brushButtons.getPaintButtonState()
+        return paintButton.isPressed
+    end
+
+    function brushButtons.getEraseButtonState()
+        return eraseButton.isPressed
+    end
+
+    function brushButtons.getColorButtonState()
+        return colorButton.isPressed
     end
 
     function brushButtons.getBrush()
