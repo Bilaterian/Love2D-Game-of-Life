@@ -17,8 +17,7 @@ local canvasMenu = require "canvasMenu"
 local brushSizes = require "brushSizes"
 local debugPrint = require "debugPrint"
 local filenameWindow = require "filenameWindow"
-
-local utf8 = require("utf8")
+local clickAnimation = require "clickAnimation"
 
 function love.load()
     boards.setWidth(boardWidth)
@@ -30,6 +29,7 @@ function love.load()
     printButton.mkdir(printButton.getScreenshotDirectory())
     love.keyboard.setKeyRepeat(true)
     canvasMenu.drawCanvas()
+    clickAnimation.onLoad()
 end
 
 local text = ""
@@ -59,7 +59,7 @@ function love.mousepressed(x, y, button, istouch)
             --mouse presses when window is on 
             filenameWindow.checkBounds(x, y)
         end
-        
+        clickAnimation.onClick(x, y)
     end
 end
 
@@ -99,6 +99,7 @@ end
 
 function love.update(dt)
 --want to check board here
+    clickAnimation.animate()
     if filenameWindow.screenState() == false then
         if pausePlayButton.paused() == false then
             if pausePlayButton.isFrame() == true then
@@ -150,9 +151,10 @@ function love.draw()
     end
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(canvasMenu.getCanvas(), 0, 0)
-    --debugPrint.print()
 
     if filenameWindow.screenState() == true then
         filenameWindow.drawWindow()
     end
+    clickAnimation.drawSprite()
+    --debugPrint.print()
 end
