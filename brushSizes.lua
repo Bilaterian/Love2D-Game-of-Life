@@ -79,6 +79,13 @@ local brushSizes = {}
         false,
     }
 
+    local buttonSprites = {
+        "brush_sprites/brushx1.png",
+        "brush_sprites/brushx3.png",
+        "brush_sprites/brushx5.png",
+        "brush_sprites/brushx7.png",
+    }
+
     function brushSizes.drawButtons()
         local x = button.offsetX
         for i = 1, #brushSize do
@@ -89,13 +96,15 @@ local brushSizes = {}
             end
             love.graphics.rectangle("fill", x, button.offsetY, button.width, button.height)
 
-            local font = love.graphics.newFont(24)
+            local image = love.graphics.newImage(buttonSprites[i])
+            love.graphics.draw(image, x, button.offsetY)
+            --[[local font = love.graphics.newFont(24)
             local textString = "x" .. tostring(brushSize[i])
             local text = love.graphics.newText(font, textString)
             local width = ((button.width - font:getWidth(textString)) / 2) + x
             local height = ((button.height - font:getHeight(textString)) / 2) + button.offsetY
             love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(1)))
-            love.graphics.draw(text, width, height)
+            love.graphics.draw(text, width, height)]]
 
             x = x + button.offsetX + button.width
         end
