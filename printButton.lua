@@ -62,11 +62,10 @@ function printButton.saveBoard()
     end)
 end
 
-function printButton.saveScreenshot()    
+function printButton.saveScreenshot()
     local filePath = combinePaths(love.filesystem.getSaveDirectory(), fileName)
     local destPath = combinePaths(screenshotDirectory, fileName)
 
-    
     ---@param image love.ImageData
     love.graphics.captureScreenshot(function(image)
         croppedImageData:encode("png", fileName)

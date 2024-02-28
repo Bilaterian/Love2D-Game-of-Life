@@ -37,6 +37,7 @@ function love.load()
 end
 
 local text = ""
+local dragNClick = false
 
 function love.mousepressed(x, y, button, istouch)
     if button == 1 then
@@ -60,6 +61,11 @@ function love.mousepressed(x, y, button, istouch)
             brushButtons.setColor(x, y)
             brushSizes.checkBounds(x, y)
             text = ""
+            if x >= 400 and x <= 800 then
+                if y >=0 and y <= 800 then
+                    dragNClick = true
+                end
+            end
         else
             --mouse presses when window is on 
             filenameWindow.checkBounds(x, y)
@@ -75,6 +81,7 @@ function love.mousereleased( x, y, button, istouch, presses )
     brushButtons.offButton()
     brushSizes.unPressed()
     filenameWindow.unPressed()
+    dragNClick = false
 end
 
 function love.textinput(t)
@@ -116,7 +123,7 @@ function love.update(dt)
             end
         end
         --draw on board
-        if love.mouse.isDown(1) == true then
+        if love.mouse.isDown(1) == true and dragNClick == true then
             if boards.checkBounds(love.mouse.getX(), love.mouse.getY()) == true then
                 local area = brushSizes.getArea(love.mouse.getX(), love.mouse.getY())
     
@@ -167,7 +174,9 @@ function love.draw()
     elseif filenameWindow.screenState() == true then
         filenameWindow.switchWait()
     end
+
     clickAnimation.drawSprite()
     --debugPrint.setText(love.window.getDisplayName(1))
     --debugPrint.print()
+
 end
