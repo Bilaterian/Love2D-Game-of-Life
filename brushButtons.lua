@@ -21,7 +21,7 @@ local brushButtons = {}
         {100, 100, 100, 255}, --buttonColor
     }
 
-    local currentColor = colors[4]
+    local currentColor = colors[3]
 
     local brushStates = {
         "PAINT",
@@ -138,6 +138,7 @@ local brushButtons = {}
         height = 35,
     }
 
+    local palette_selector = love.graphics.newImage("palette_selector.png")
 
     local XPAD = 25
     local YPAD = 410
@@ -151,7 +152,9 @@ local brushButtons = {}
         for i = 2, #colors - 1 do
             love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(i)))
             love.graphics.rectangle("fill", x, y, paintbox.width, paintbox.height)
-           
+            if currentColor == colors[i] then
+                love.graphics.draw(palette_selector, x - 5, y - 5)
+            end
             x = x + paintbox.width + 10
             if x + paintbox.width >= 400 then
                 x = XPAD

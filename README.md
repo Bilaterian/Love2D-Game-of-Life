@@ -25,5 +25,5 @@
 -installer -> get github to do this
 -change saving to user directory -> done
 -change functionality of draw button to also draw in the desired colour -> done
--custom icon and app name  ->done
+-custom icon and app name -> done
 -bug where clicking save still draws to screen first -> hacky but done

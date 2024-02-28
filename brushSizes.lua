@@ -73,7 +73,7 @@ local brushSizes = {}
         offsetY = 500,
     }
     local buttonStates = {
-        false,
+        true,
         false,
         false,
         false,
@@ -125,7 +125,9 @@ local brushSizes = {}
 
     function brushSizes.unPressed()
         for i = 1, #brushSize do
-            buttonStates[i] = false
+            if brushSize[i] ~= brush then
+                buttonStates[i] = false
+            end
         end
     end
 
