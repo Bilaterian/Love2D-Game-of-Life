@@ -18,3 +18,12 @@
  - need better design overall
  - refactor so that lua files that just need colors don't need a reference to brushButtons
  - consider creating an abstract class since there are plenty of duplicate functions between buttons
+
+ user desired changes by samuel loveys:
+-brush toggle
+-palette toggle
+-installer -> get github to do this
+-change saving to user directory -> done
+-change functionality of draw button to also draw in the desired colour -> done
+-custom icon and app name  ->done
+-bug where clicking save still draws to screen first -> hacky but done

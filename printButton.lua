@@ -41,8 +41,7 @@ local function combinePaths(...)
     return (table.concat({...}, separator):gsub(separator .. "+", separator)) -- System dependant
 end
 
-local screenshotDirectory = combinePaths(love.filesystem.getWorkingDirectory(), "Pictures")
-
+local screenshotDirectory = combinePaths(combinePaths(love.filesystem.getUserDirectory(), "Pictures", love.filesystem.getIdentity()))
 
 function printButton.getScreenshotDirectory()
     return screenshotDirectory
@@ -54,15 +53,22 @@ function printButton.setFilename(text)
     fileName = text..".png"
 end
 
-function printButton.saveScreenshot()
+local width, height = 400, 600
+local croppedImageData = love.image.newImageData(width, height)
+
+function printButton.saveBoard()
+    love.graphics.captureScreenshot(function(image)
+        croppedImageData:paste(image, 0, 0, 400, 0, 400, 600)
+    end)
+end
+
+function printButton.saveScreenshot()    
     local filePath = combinePaths(love.filesystem.getSaveDirectory(), fileName)
     local destPath = combinePaths(screenshotDirectory, fileName)
 
-    local width, height = 400, 600
-    local croppedImageData = love.image.newImageData(width, height)
+    
     ---@param image love.ImageData
     love.graphics.captureScreenshot(function(image)
-        croppedImageData:paste(image, 0, 0, 400, 0, 400, 600)
         croppedImageData:encode("png", fileName)
         os.rename(filePath, destPath)
     end)

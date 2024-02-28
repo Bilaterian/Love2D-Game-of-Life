@@ -26,6 +26,10 @@ function love.load()
     boards.populateBoard()
 
     love.filesystem.setIdentity("Game of Life")
+    love.window.setTitle("Love2D Game of Life")
+    local image = love.image.newImageData("icon.png")
+    love.window.setIcon(image)
+    
     printButton.mkdir(printButton.getScreenshotDirectory())
     love.keyboard.setKeyRepeat(true)
     canvasMenu.drawCanvas()
@@ -48,6 +52,7 @@ function love.mousepressed(x, y, button, istouch)
             end
             if printButton.checkBounds(x, y) == true then
                 printButton.pressed()
+                printButton.saveBoard()
                 filenameWindow.updateDefaultFilename()
                 filenameWindow.onScreen()
             end
@@ -101,6 +106,7 @@ function love.update(dt)
 --want to check board here
     clickAnimation.animate()
     if filenameWindow.screenState() == false then
+        --update board on gol
         if pausePlayButton.paused() == false then
             if pausePlayButton.isFrame() == true then
                 boards.transferBoards()
@@ -109,6 +115,7 @@ function love.update(dt)
                 pausePlayButton.incrementFrame()
             end
         end
+        --draw on board
         if love.mouse.isDown(1) == true then
             if boards.checkBounds(love.mouse.getX(), love.mouse.getY()) == true then
                 local area = brushSizes.getArea(love.mouse.getX(), love.mouse.getY())
@@ -118,6 +125,9 @@ function love.update(dt)
                         if brushButtons.getBrush() == "PAINT" then
                             boards.onCell(math.ceil((area[i][1] - offsetX)/PIXEL_SIZE),
                                           math.ceil((area[i][2] - offsetY)/PIXEL_SIZE))
+                            boards.setColor(math.ceil((area[i][1] - offsetX)/PIXEL_SIZE),
+                                            math.ceil((area[i][2] - offsetY)/PIXEL_SIZE),
+                                            brushButtons.getColor())
                         elseif brushButtons.getBrush() == "ERASE" then
                             boards.offCell(math.ceil((area[i][1] - offsetX)/PIXEL_SIZE),
                                            math.ceil((area[i][2] - offsetY)/PIXEL_SIZE))
@@ -152,9 +162,12 @@ function love.draw()
     love.graphics.setColor(1,1,1,1)
     love.graphics.draw(canvasMenu.getCanvas(), 0, 0)
 
-    if filenameWindow.screenState() == true then
+    if filenameWindow.screenState() == true and filenameWindow.getWait() == true then
         filenameWindow.drawWindow()
+    elseif filenameWindow.screenState() == true then
+        filenameWindow.switchWait()
     end
     clickAnimation.drawSprite()
+    --debugPrint.setText(love.window.getDisplayName(1))
     --debugPrint.print()
 end

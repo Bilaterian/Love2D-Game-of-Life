@@ -37,6 +37,7 @@ local screenOn = false
 
 local defaultFilename = os.time()..".png"
 local fileName = ""
+local onWait = false
 
 function filenameWindow.drawWindow()
     --window
@@ -123,11 +124,13 @@ function filenameWindow.checkBounds(x, y)
             closeButton.isPressed = true
             screenOn = false
             fileName = ""
+            onWait = false
         end
     elseif x >= saveButton.offsetX and x <= saveButton.offsetX + saveButton.width then
         if y >= saveButton.offsetY and y <= saveButton.offsetY + saveButton.height then
             saveButton.isPressed = true
             filenameWindow.printFile()
+            onWait = false
         end
     end
 end
@@ -143,6 +146,18 @@ end
 
 function filenameWindow.updateFilename(text)
     fileName = text
+end
+
+function  filenameWindow.getWait()
+    return onWait
+end
+
+function filenameWindow.switchWait()
+    if onWait == false then
+        onWait = true
+    else
+        onWait = false
+    end
 end
 
 return filenameWindow
