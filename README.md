@@ -27,3 +27,4 @@
 -change functionality of draw button to also draw in the desired colour -> done
 -custom icon and app name -> done
 -bug where clicking save still draws to screen first -> hacky but done
+-new bug where clicking save/close still draws to screen
