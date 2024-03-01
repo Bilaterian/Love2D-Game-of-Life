@@ -46,19 +46,16 @@ function canvasMenu.drawCanvas()
 
     --draws print button
     dimensions = printButton.getButtonDimensions()
-    if printButton.getPressedState() == false then
-        love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(18)))
-    else
-        love.graphics.setColor(love.math.colorFromBytes(80, 80, 80, 255))
-    end
+    love.graphics.setColor(love.math.colorFromBytes(80, 80, 80, 255))
     love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
     
-    font = love.graphics.newFont(24)
-    text = love.graphics.newText(font, printButton.getText())
-    width = ((dimensions[3] - font:getWidth(printButton.getText())) / 2) + dimensions[1]
-    height = ((dimensions[4] - font:getHeight(printButton.getText())) / 2) + dimensions[2]
+    --[[font = love.graphics.newFont(24)
+    string = "Print is available in Windows Version"
+    text = love.graphics.newText(font, string)
+    width = ((dimensions[3] - font:getWidth(string)) / 2) + dimensions[1]
+    height = ((dimensions[4] - font:getHeight(string)) / 2) + dimensions[2]
     love.graphics.setColor(brushButtons.getColor(1))
-    love.graphics.draw(text, width, height)
+    love.graphics.draw(text, width, height)]]--
 
     --draws paint, erase and color buttons
     dimensions = brushButtons.getPaintButtonDimensions()

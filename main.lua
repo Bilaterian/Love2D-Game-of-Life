@@ -52,10 +52,10 @@ function love.mousepressed(x, y, button, istouch)
                 pausePlayButton.switchStates()
             end
             if printButton.checkBounds(x, y) == true then
-                printButton.pressed()
+                --[[printButton.pressed()
                 printButton.saveBoard()
                 filenameWindow.updateDefaultFilename()
-                filenameWindow.onScreen()
+                filenameWindow.onScreen()]]--
             end
             brushButtons.setBrush(x, y)
             brushButtons.setColor(x, y)
