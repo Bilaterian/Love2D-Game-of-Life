@@ -21,7 +21,8 @@ function canvasMenu.drawCanvas()
     end
     love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
     
-    local font = love.graphics.newFont(24)
+    local font = love.graphics.newFont("Pixel.ttf", 20)
+    love.graphics.setFont(font)
     local text = love.graphics.newText(font, generateButton.getText())
     local width = ((dimensions[3] - font:getWidth(generateButton.getText())) / 2) + dimensions[1]
     local height = ((dimensions[4] - font:getHeight(generateButton.getText())) / 2) + dimensions[2]
@@ -37,7 +38,6 @@ function canvasMenu.drawCanvas()
     end
     love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
     
-    font = love.graphics.newFont(24)
     text = love.graphics.newText(font, pausePlayButton.getText())
     width = ((dimensions[3] - font:getWidth(pausePlayButton.getText())) / 2) + dimensions[1]
     height = ((dimensions[4] - font:getHeight(pausePlayButton.getText())) / 2) + dimensions[2]
@@ -53,7 +53,6 @@ function canvasMenu.drawCanvas()
     end
     love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
     
-    font = love.graphics.newFont(24)
     text = love.graphics.newText(font, printButton.getText())
     width = ((dimensions[3] - font:getWidth(printButton.getText())) / 2) + dimensions[1]
     height = ((dimensions[4] - font:getHeight(printButton.getText())) / 2) + dimensions[2]
@@ -68,8 +67,7 @@ function canvasMenu.drawCanvas()
         love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(18)))
     end
     love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
-    
-    font = love.graphics.newFont(24)
+
     text = love.graphics.newText(font, brushButtons.getPaintText())
     width = ((dimensions[3] - font:getWidth(brushButtons.getPaintText())) / 2) + dimensions[1]
     height = ((dimensions[4] - font:getHeight(brushButtons.getPaintText())) / 2) + dimensions[2]
@@ -83,13 +81,12 @@ function canvasMenu.drawCanvas()
         love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(18)))
     end
     love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
-    
-    font = love.graphics.newFont(24)
+
     text = love.graphics.newText(font, brushButtons.getEraseText())
     width = ((dimensions[3] - font:getWidth(brushButtons.getEraseText())) / 2) + dimensions[1]
     height = ((dimensions[4] - font:getHeight(brushButtons.getEraseText())) / 2) + dimensions[2]
     love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(1)))
-    love.graphics.draw(text, width, height)
+    love.graphics.draw(text, width + 3, height)
 
     dimensions = brushButtons.getColorButtonDimensions()
     if brushButtons.getBrush() == "COLOR" then
@@ -98,13 +95,12 @@ function canvasMenu.drawCanvas()
         love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(18)))
     end
     love.graphics.rectangle("fill", dimensions[1], dimensions[2], dimensions[3], dimensions[4])
-    
-    font = love.graphics.newFont(24)
+
     text = love.graphics.newText(font, brushButtons.getColorText())
     width = ((dimensions[3] - font:getWidth(brushButtons.getColorText())) / 2) + dimensions[1]
     height = ((dimensions[4] - font:getHeight(brushButtons.getColorText())) / 2) + dimensions[2]
     love.graphics.setColor(love.math.colorFromBytes(brushButtons.getColor(1)))
-    love.graphics.draw(text, width, height)
+    love.graphics.draw(text, width + 3, height)
 
     brushButtons.drawPalette()
     brushSizes.drawButtons()
